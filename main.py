@@ -105,3 +105,5 @@ async def hello(ga:str, gid:str=None):
 if __name__ == '__main__':
     uvicorn.run(app, port=8001, host='0.0.0.0')
     # uvicorn.run(app, port=8001, host='localhost')
+
+    #####
