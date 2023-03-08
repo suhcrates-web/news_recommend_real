@@ -22,7 +22,10 @@ for _ in range(1):
     data = {"gid":"_", "ga":"1179"}
     # data = {'gid':gid,'ga':ga}
     print(json.dumps(data))
-    temp = requests.post(f'http://10.85.0.239:8000/',data=json.dumps(data))
+    # temp = requests.post(f'http://10.85.0.239:8000/',data=json.dumps(data))
+    temp = requests.post(f'http://3.137.206.51:8001/',data=json.dumps(data))
+
+
     print(temp.content.decode('utf-8'))
     end = timeit.default_timer()
     print(end-start)
