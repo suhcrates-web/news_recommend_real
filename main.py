@@ -39,8 +39,8 @@ r2 = redis.Redis(connection_pool=pool2)
 
 @app.get("/{ga}/{gid}")
 async def hello(ga:str, gid:str=None):
-    print(ga)
-    print(gid)
+    # print(ga)
+    # print(gid)
     p = 0.3
     time0 = []
     time1 = []
@@ -103,5 +103,5 @@ async def hello(ga:str, gid:str=None):
     return dics1
 
 if __name__ == '__main__':
-    uvicorn.run(app, port=8001, host='0.0.0.0')
-    # uvicorn.run(app, port=8001, host='localhost')
+    # uvicorn.run(app, port=8001, host='0.0.0.0')
+    uvicorn.run(app, port=8001, host='localhost')

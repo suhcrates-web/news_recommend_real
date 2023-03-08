@@ -8,7 +8,7 @@ test_ga = ['117995083', '117867403', '117996813', '117828556', '118058018', '117
 # requests.get('http://10.85.0.239:8000/1/1/')
 
 time1 = []
-for _ in range(1):
+for _ in range(2000):
     # time.sleep(3)
     gid = test_ga[np.random.randint(0, len(test_ga))]
     ga=gid
@@ -19,19 +19,20 @@ for _ in range(1):
     # ga = "1179"
     # temp = requests.get(f'http://10.85.0.239:8001/{ga}/_/')
 
-    data = {"gid":"_", "ga":"1179"}
+    # data = {"gid":gid, "ga":ga}
+    # data = {"gid":117930591, "ga":117930591}
     # data = {'gid':gid,'ga':ga}
-    print(json.dumps(data))
+    # print(json.dumps(data))
     # temp = requests.post(f'http://10.85.0.239:8000/',data=json.dumps(data))
-    temp = requests.post(f'http://3.137.206.51:8001/',data=json.dumps(data))
-
-
-    print(temp.content.decode('utf-8'))
+    # temp = requests.post(f'http://3.137.206.51:8001/',data=json.dumps(data))
+    # temp = requests.post(f'http://localhost:8001/',data=json.dumps(data))
+    temp = requests.get(f'http://3.137.206.51:8001/{ga}/{gid}')
+    # print(temp.content.decode('utf-8'))
     end = timeit.default_timer()
     print(end-start)
     time1.append(end - start)
     # print(temp.content.decode('utf-8'))
-
+print("============")
 print(max(time1))
 print(min(time1))
 print(np.mean(time1))
