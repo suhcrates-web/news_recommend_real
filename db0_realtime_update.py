@@ -5,6 +5,7 @@
 import requests
 import json
 import mysql.connector
+from database import config
 from datetime import date, timedelta, datetime
 import binascii
 import re
@@ -41,27 +42,19 @@ def updater(clean0):
         result = [i[:-5] for i in okt.pos(text, norm=True, join=True) if i[-4:] =='Noun']
         return result
 
-    def press_checker(text):
-        result = 'unknown'
-        if 'donga' in text:
-            if '닷컴'in text :
-                result = '동아닷컴'
-            else:
-                result = '동아'
-        else:
-            if '뉴시스' in text:
-                result = '뉴시스'
-            elif '뉴스1' in text:
-                result = '뉴스1'
-        return result
-
-    config = {
-        'user' : 'root',
-        'password': 'Seoseoseo7!',
-        'host':'localhost',
-        # 'database':'shit',
-        'port':'3306'
-    }
+    # def press_checker(text):
+    #     result = 'unknown'
+    #     if 'donga' in text:
+    #         if '닷컴'in text :
+    #             result = '동아닷컴'
+    #         else:
+    #             result = '동아'
+    #     else:
+    #         if '뉴시스' in text:
+    #             result = '뉴시스'
+    #         elif '뉴스1' in text:
+    #             result = '뉴스1'
+    #     return result
 
     db = mysql.connector.connect(**config)
     cursor = db.cursor()
@@ -94,19 +87,20 @@ def updater(clean0):
                         content, press = temp
                     else:
                         content, press = temp[0], 'unknown'
-                    press = press_checker(press)
 
                     # doc2vec 변환 후 redis에 넣기
                     jogaked = jogakjogak(content)
                     jogaked = model.infer_vector(jogaked)
-                    r.set(gid, np.array(jogaked).tostring())
+                    jogaked = np.array(np.array(jogaked))
+                    r.set(gid, jogaked.tostring())
                     # mysql에 넣기
                     cursor.execute(
                         f"""
                         insert into news_recommend.news_ago values(
-                        "{ar['gid']}", "{ar['createtime']}", "{title}", b'{bin(int(binascii.hexlify(content.encode("utf-8")), 16))[2:]}', "{ar['url']}", "{ar['thumburl']}", "{press}")
+                        "{ar['gid']}", "{ar['createtime']}", "{title}", b'{bin(int(binascii.hexlify(content.encode("utf-8")), 16))[2:]}', "{ar['url']}", "{ar['thumburl']}", "{ar['source']}", b'{bin(int(binascii.hexlify(str(list(jogaked)).encode("utf-8")), 16))[2:]}')
                         """
                     )
+                      # 벡터를 mysql에도 저장. 인출떄는  np.array(json.loads(cursor.fetchall()[0][0]))
     db.commit()
 
     # 2) 기사 수정 및 삭제

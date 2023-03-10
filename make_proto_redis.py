@@ -2,12 +2,16 @@ from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 import gensim
 import redis
 from konlpy.tag import Okt
-from database import db, cursor
+import mysql.connector
+from database import config
 import codecs
 import numpy as np
+import binascii
+
+db = mysql.connector.connect(**config)
+cursor = db.cursor()
 
 ### db=0  (기사 gid:벡터  환경 만들기. 30일치 긁어와서.)
-
 okt = Okt()
 r = redis.Redis(host='localhost', port=6379)
 model = Doc2Vec.load('test.model')
@@ -32,9 +36,13 @@ ar_dic = {k:v for k,v in cursor.fetchall()}
 for gid, content in ar_dic.items():
     jogaked = jogakjogak(codecs.decode(content, 'utf-8'))
     jogaked = model.infer_vector(jogaked)
-    # r.set(gid, str(jogaked))
-
-    # a=np.array(jogaked)
-    # a =np.fromstring(a, dtype='float32') ## 요거 안써주면 이상해짐
-    r.set(gid, np.array(jogaked).tostring())  # tostring() 기반.
+    jogaked = np.array(jogaked)
+    r.set(gid, jogaked.tobytes())  # tobytes() 기반.
     print(gid)
+
+    cursor.execute(
+        f"""
+        update news_recommend.news_ago set test= b'{bin(int(binascii.hexlify(str(list(jogaked)).encode("utf-8")), 16))[2:]}' where gid='{gid}'
+        """
+    )
+db.commit()

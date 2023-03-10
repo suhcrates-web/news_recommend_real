@@ -4,6 +4,7 @@ from redis import Redis, ConnectionPool
 import numpy as np
 import json
 import mysql.connector
+from database import config
 import time
 
 
@@ -14,14 +15,6 @@ r = redis.Redis(connection_pool=pool)
 r2 = redis.Redis(connection_pool=pool2)
 
 def db2_updater():
-    config = {
-        'user': 'root',
-        'password': 'Seoseoseo7!',
-        'host': 'localhost',
-        # 'database':'shit',
-        'port': '3306'
-    }
-
     db = mysql.connector.connect(**config)
     cursor = db.cursor()
 

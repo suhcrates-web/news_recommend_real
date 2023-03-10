@@ -1,13 +1,16 @@
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 import gensim
 import gensim.downloader as api
-
-from database import cursor, db
+import mysql.connector
+from database import config
 import codecs
 from konlpy.tag import Kkma, Komoran, Okt
 import numpy as np
 from collections import Counter
 from gensim.test.utils import get_tmpfile
+
+db = mysql.connector.connect(**config)
+cursor = db.cursor()
 
 okt = Okt()
 # kkm = Kkma()

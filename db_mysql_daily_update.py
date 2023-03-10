@@ -1,17 +1,11 @@
 import mysql.connector
+from database import config
 import redis
 from redis import Redis, ConnectionPool
 from datetime import datetime, timedelta, date
 import time
 
 def mysql_updater():
-    config = {
-        'user' : 'root',
-        'password': 'Seoseoseo7!',
-        'host':'localhost',
-        # 'database':'shit',
-        'port':'3306'
-    }
 
     db = mysql.connector.connect(**config)
     cursor = db.cursor()

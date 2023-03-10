@@ -9,6 +9,13 @@ cursor.execute(
     """
 )
 
+
+cursor.execute(
+    """
+    drop table if exists news_recommend.news_ago;
+    """
+)
+
 cursor.execute(
     """
     create table if not exists news_recommend.news_ago(
@@ -18,7 +25,8 @@ cursor.execute(
     content mediumblob,
     url varchar(100),
     thumburl varchar(100),
-    press varchar(5)
-    )
+    source varchar(10),
+    vec mediumblob
+    );
     """
 )
