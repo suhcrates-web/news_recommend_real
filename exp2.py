@@ -1,7 +1,11 @@
 ## db 와 테이블 만들기
 
-from database import db, cursor
+from database import config
+import mysql.connector
 
+
+db = mysql.connector.connect(**config)
+cursor = db.cursor()
 
 cursor.execute(
     """

@@ -14,7 +14,7 @@ cursor = db.cursor()
 ### db=0  (기사 gid:벡터  환경 만들기. 30일치 긁어와서.)
 okt = Okt()
 r = redis.Redis(host='localhost', port=6379)
-model = Doc2Vec.load('test.model')
+model = Doc2Vec.load('test1.model')
 r.flushdb()
 def tagged_document(list_of_list_of_words):  # 리스트 형태로 넣어야함
     for i, list_of_words in enumerate(list_of_list_of_words):
