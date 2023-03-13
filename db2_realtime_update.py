@@ -32,14 +32,14 @@ def db2_updater():
     thumburl_list = []
 
     for i, (gid, title, url, thumburl) in enumerate(cursor.fetchall()):
-        mat[i:] =np.fromstring(r.get(gid), dtype='float32')
+        mat[i:] =np.frombuffer(r.get(gid), dtype='float32')
         gid_list.append(gid)
 
         title_list.append(title)
         url_list.append(url)
         thumburl_list.append(thumburl)
 
-    mat_b = mat.tostring()
+    mat_b = mat.tobytes()
 
     r2.flushdb()
     r2.set('mat', mat_b)

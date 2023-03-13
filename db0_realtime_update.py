@@ -22,7 +22,7 @@ r = redis.Redis(connection_pool=pool)
 
 def updater(clean0):
     keys = [x.decode('utf-8') for x in r.keys('*')]  # redis db 0 에 저장된 key 값 (gid) 모두 인출.
-    model = Doc2Vec.load('test.model')  # doc2vec 모델 로드.
+    model = Doc2Vec.load('test1.model')  # doc2vec 모델 로드.
     okt = Okt()  # 형태소 변환 모듈
 
     today0 = date.today()
