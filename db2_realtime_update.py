@@ -13,7 +13,6 @@ pool2 = ConnectionPool(host='localhost', port=6379, db=2)
 
 r = redis.Redis(connection_pool=pool)
 r2 = redis.Redis(connection_pool=pool2)
-
 def db2_updater():
     db = mysql.connector.connect(**config)
     cursor = db.cursor()
@@ -24,7 +23,6 @@ def db2_updater():
         select gid, title, url, thumburl from news_recommend.news_ago order by createtime desc limit {num_gisa}
         """
     )
-
     mat = np.zeros((num_gisa,50))
     gid_list = []
     title_list = []
@@ -32,6 +30,8 @@ def db2_updater():
     thumburl_list = []
 
     for i, (gid, title, url, thumburl) in enumerate(cursor.fetchall()):
+        print(gid)
+        print(r.get(gid))
         mat[i:] =np.frombuffer(r.get(gid), dtype='float32')
         gid_list.append(gid)
 

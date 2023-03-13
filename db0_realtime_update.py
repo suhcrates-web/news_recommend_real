@@ -92,7 +92,7 @@ def updater(clean0):
                     jogaked = jogakjogak(content)
                     jogaked = model.infer_vector(jogaked)
                     jogaked = np.array(np.array(jogaked))
-                    r.set(gid, jogaked.tostring())
+                    r.set(gid, jogaked.tobytes())
                     # mysql에 넣기
                     cursor.execute(
                         f"""
