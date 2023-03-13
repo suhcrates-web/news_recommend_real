@@ -43,5 +43,5 @@ for i in range(29):
             )
             # print("=================================")
             # print("=================================")
-    # db.commit()
-db.commit()
+    db.commit()
+# db.commit()

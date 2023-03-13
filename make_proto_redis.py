@@ -32,14 +32,13 @@ cursor.execute(
 )
 
 ar_dic = {k:v for k,v in cursor.fetchall()}
-print(ar_dic)
+
 for gid, content in ar_dic.items():
     jogaked = jogakjogak(codecs.decode(content, 'utf-8'))
     jogaked = model.infer_vector(jogaked)
     jogaked = np.array(jogaked)
     r.set(gid, jogaked.tobytes())  # tobytes() 기반.
     print(gid)
-
     cursor.execute(
         f"""
         update news_recommend.news_ago set vec= b'{bin(int(binascii.hexlify(str(list(jogaked)).encode("utf-8")), 16))[2:]}' where gid='{gid}'
