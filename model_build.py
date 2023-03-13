@@ -18,7 +18,7 @@ okt = Okt()
 
 cursor.execute(
     """
-    select content from news_recommend.news_ago
+    select content from news_recommend.news_ago by createtime desc limit 1000
     """
 )
 
