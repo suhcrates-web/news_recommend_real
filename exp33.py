@@ -33,8 +33,10 @@ r2 = redis.Redis(connection_pool=pool2)
 
 @app.get("/{ga}/{gid}")
 async def hello(ga:str, gid:str=None):
-    gid = None if '_' else gid
+    gid = None if gid=='_' else gid
     p = 0.3
+    print(gid)
+    print(ga)
     time0 = []
     time1 = []
     result0 = []
@@ -43,7 +45,8 @@ async def hello(ga:str, gid:str=None):
     start = timeit.default_timer()
     #######
     dics1= {}
-    for _ in range(1):
+    for _ in range(3):
+        try:  # 그냥 아무이유없이 redis에서 None 이 나오는 경우가 매우 드물게 있어서
             if gid is None:  # 사용자에게서 gid 가 안옴
                 u_vec = r1.get(ga)
                 if u_vec == None:  # 사용자 ga에 해당하는 벡터가 없음
@@ -86,6 +89,8 @@ async def hello(ga:str, gid:str=None):
             for i, x in enumerate(top10):
                 dics1[i] = {'title': title_list[x], 'url': url_list[x], 'thumburl': thumburl_list[x]}
             break
+        except Exception as e:
+            print(e)
     end = timeit.default_timer()
     # print(end-start)
     time1.append(end - start)

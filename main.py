@@ -33,7 +33,7 @@ r2 = redis.Redis(connection_pool=pool2)
 
 @app.get("/{ga}/{gid}")
 async def hello(ga:str, gid:str=None):
-    gid = None if '_' else gid
+    gid = None if gid=='_' else gid
     p = 0.3
     time0 = []
     time1 = []
