@@ -16,7 +16,7 @@ from konlpy.tag import Okt
 import numpy as np
 import time
 import gc
-
+import sys
 
 pool = ConnectionPool(host='localhost', port=6379, db=0)
 r = redis.Redis(connection_pool=pool)
@@ -175,5 +175,6 @@ if __name__ == '__main__':
             clean0 =True
             # print(f"\r마지막 수신 : {now0}",end='')
             print(f"마지막 수신 : {now0}",end='||')
+        sys.stdout.flush()
         gc.collect()
         time.sleep(10)

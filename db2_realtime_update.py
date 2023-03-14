@@ -6,6 +6,7 @@ import json
 import mysql.connector
 from database import config
 import time
+import sys
 
 
 pool = ConnectionPool(host='localhost', port=6379, db=0)
@@ -50,4 +51,5 @@ if __name__ == '__main__':
         print(f"{n} 사이클 완료")
         n += 1
         print("==============")
+        sys.stdout.flush()
         time.sleep(120)
