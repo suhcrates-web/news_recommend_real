@@ -4,6 +4,7 @@ import redis
 from redis import Redis, ConnectionPool
 from datetime import datetime, timedelta, date
 import time
+import sys
 
 def mysql_updater():
 
@@ -73,5 +74,6 @@ if __name__ == "__main__":
             print(f"mysql : {min_before} ~ {max_before}  -> {min_after} ~ {max_after}")
             last_update = now0
             print("=================")
-        print(f'\r현재시간 : {now0}', end='')
+        print(f'현재시간 : {now0}', end='||')
+        sys.stdout.flush()
         time.sleep(60*30)
