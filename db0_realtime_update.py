@@ -96,7 +96,7 @@ def updater(clean0):
                     # mysql에 넣기
                     cursor.execute(
                         f"""
-                        insert into news_recommend.news_ago values(
+                        insert ignore into news_recommend.news_ago values(
                         "{ar['gid']}", "{ar['createtime']}", "{title}", b'{bin(int(binascii.hexlify(content.encode("utf-8")), 16))[2:]}', "{ar['url']}", "{ar['thumburl']}", "{ar['source']}", b'{bin(int(binascii.hexlify(str(list(jogaked)).encode("utf-8")), 16))[2:]}')
                         """
                     )
@@ -172,5 +172,6 @@ if __name__ == '__main__':
             print("============")
         else:  # 처리한 게 하나도 없을 경우.
             clean0 =True
-            print(f"\r마지막 수신 : {now0}",end='')
-        time.sleep(30)
+            # print(f"\r마지막 수신 : {now0}",end='')
+            print(f"마지막 수신 : {now0}",end='||')
+        time.sleep(10)

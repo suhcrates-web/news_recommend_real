@@ -6,24 +6,18 @@ import redis
 from redis import Redis, ConnectionPool
 import uvicorn
 from pydantic import BaseModel
+from database import config
 
-config = {
-    'user' : 'root',
-    'password': 'Seoseoseo7!',
-    'host':'localhost',
-    # 'database':'shit',
-    'port':'3306'
-}
 
 def find_10_alt(tot_mat, user_vector):
     points = np.matmul(tot_mat, user_vector)
     top10 = np.argsort(points)[::-1][:10]
     return top10
-
-class item0(BaseModel):
-    ga: str
-    gid: str =None
-    num0: int =10
+#
+# class item0(BaseModel):
+#     ga: str
+#     gid: str =None
+#     num0: int =10
 
 
 app = FastAPI()
@@ -39,8 +33,7 @@ r2 = redis.Redis(connection_pool=pool2)
 
 @app.get("/{ga}/{gid}")
 async def hello(ga:str, gid:str=None):
-    # print(ga)
-    # print(gid)
+    gid = None if '_' else gid
     p = 0.3
     time0 = []
     time1 = []
