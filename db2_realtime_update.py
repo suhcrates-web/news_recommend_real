@@ -28,7 +28,7 @@ def db2_updater():
     title_list = []
     url_list = []
     thumburl_list = []
-
+    print(1)
     for i, (gid, title, url, thumburl) in enumerate(cursor.fetchall()):
         mat[i:] =np.frombuffer(r.get(gid), dtype='float32')
         gid_list.append(gid)
@@ -36,10 +36,11 @@ def db2_updater():
         title_list.append(title)
         url_list.append(url)
         thumburl_list.append(thumburl)
-
+    print(2)
     mat_b = mat.tobytes()
-
+    print(3)
     r2.flushdb()
+    print(4)
     r2.set('mat', mat_b)
     r2.set('gid2', json.dumps(gid_list))
     r2.set('title', json.dumps(title_list))
@@ -50,6 +51,8 @@ if __name__ == '__main__':
     n=1
     while True:
         db2_updater()
+        print(5)
+        print(6)
         print(f"{n} 사이클 완료")
         n += 1
         print("==============")
