@@ -15,7 +15,7 @@ from gensim.models.doc2vec import Doc2Vec
 from konlpy.tag import Okt
 import numpy as np
 import time
-import gc
+# import gc
 
 
 pool = ConnectionPool(host='localhost', port=6379, db=0)
@@ -175,5 +175,5 @@ if __name__ == '__main__':
             clean0 =True
             # print(f"\r마지막 수신 : {now0}",end='')
             print(f"마지막 수신 : {now0}",end='||')
-        gc.collect()
+        # gc.collect()
         time.sleep(10)
