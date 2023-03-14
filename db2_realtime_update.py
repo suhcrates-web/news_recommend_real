@@ -43,6 +43,7 @@ def db2_updater():
     r2.set('title', json.dumps(title_list))
     r2.set('url', json.dumps(url_list))
     r2.set('thumburl', json.dumps(thumburl_list))
+    r2.set('temp', np.random.rand(50).astype('float32').tobytes()) # ***** 수정해야함
 
 if __name__ == '__main__':
     n=1
