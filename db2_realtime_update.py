@@ -49,6 +49,9 @@ def db2_updater():
 
 if __name__ == '__main__':
     n=1
+    print('시작')
+    print('시작')
+    print('시작')
     while True:
         db2_updater()
         print(5)
