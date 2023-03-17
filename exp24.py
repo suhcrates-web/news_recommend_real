@@ -52,6 +52,9 @@ def updater(clean0):
         raise ZeroDataException
 
     ## 1) 새로 업데이트된 기사 정보를 mysql에 쌓음. 또 본문을 word2vec 으로 vec 변환해 redis에  'gid : vec' 형태로 저장함.
+    def jogakjogak(text): #조각냄
+        result = [i[:-5] for i in okt.pos(text, norm=True, join=True) if i[-4:] =='Noun']
+        return result
 
     db = mysql.connector.connect(**config)
     cursor = db.cursor()
@@ -92,15 +95,15 @@ def updater(clean0):
                             content, press = temp[0], 'unknown'
 
                         # doc2vec 변환 후 redis에 넣기
-                        konlpy0 = okt.pos(content, norm=True, join=True)
-                        vector0 = model.infer_vector(konlpy0)
-                        vector0 = np.array(np.array(vector0))
-                        r.set(ar['gid'], vector0.tobytes())
+                        jogaked = jogakjogak(content)
+                        jogaked = model.infer_vector(jogaked)
+                        jogaked = np.array(np.array(jogaked))
+                        r.set(ar['gid'], jogaked.tobytes())
                         # mysql에 넣기
                         cursor.execute(
                             f"""
                             insert ignore into news_recommend.news_ago values(
-                            "{ar['gid']}", "{ar['createtime']}", "{title}", b'{bin(int(binascii.hexlify(content.encode("utf-8")), 16))[2:]}', "{ar['url']}", "{ar['thumburl']}", "{ar['source']}", b'{bin(int(binascii.hexlify(str(list(vector0)).encode("utf-8")), 16))[2:]}', b'{bin(int(binascii.hexlify(str( json.dumps(konlpy0) ).encode("utf-8")), 16))[2:]}'  )
+                            "{ar['gid']}", "{ar['createtime']}", "{title}", b'{bin(int(binascii.hexlify(content.encode("utf-8")), 16))[2:]}', "{ar['url']}", "{ar['thumburl']}", "{ar['source']}", b'{bin(int(binascii.hexlify(str(list(jogaked)).encode("utf-8")), 16))[2:]}')
                             """
                         )
                           # 벡터를 mysql에도 저장. 인출떄는  np.array(json.loads(cursor.fetchall()[0][0]))
@@ -175,7 +178,7 @@ if __name__ == '__main__':
                 if clean0:
                     print('\n============')
                     clean0 = False
-                print(f"마지막 업데이트 : {now0} // mysql : {before_count} -> {after_count} // api {num_recieve}개 받아 {num_doc2vec}개 전환// {num_deleted}개 삭제 {num_corrected}개 수정// {after_min} ~ {after_max}")
+                print(f"마지막 업데이트 : {now0} // mysql : {before_count} -> {after_count} // api {num_recieve}개 받아 {num_doc2vec}개 전환// {num_deleted}개 삭제 {num_corrected}개 수정")
                 print("============")
             else:  # 처리한 게 하나도 없을 경우.
                 clean0 =True

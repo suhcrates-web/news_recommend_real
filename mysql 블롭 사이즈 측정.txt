@@ -1,0 +1,14 @@
+news_ago
+okt 집어넣기 전 메모리 용량
+62.125
+
+#
+blob 사이즈는 이렇게 측정.
+cursor.execute(
+    """
+select length(test) from news_recommend.news_ago;
+"""
+)
+print(cursor.fetchall()[0][0]/1024/1024)
+
+7000개 넣어도 0.045메가밖에 안됨

@@ -18,10 +18,10 @@ def db2_updater():
     db = mysql.connector.connect(**config)
     cursor = db.cursor()
 
-    num_gisa = 700
+    num_gisa = 2000
     cursor.execute(
         f"""
-        select gid, title, url, thumburl from news_recommend.news_ago order by createtime desc limit {num_gisa}
+        select gid, title, url, thumburl from news_recommend.news_ago where source='동아일보' order by createtime desc limit {num_gisa}
         """
     )
     mat = np.zeros((num_gisa,50))

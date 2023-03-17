@@ -30,7 +30,8 @@ cursor.execute(
     url varchar(100),
     thumburl varchar(100),
     source varchar(10),
-    vec mediumblob
+    vec mediumblob,
+    konlpy mediumblob
     );
     """
 )
