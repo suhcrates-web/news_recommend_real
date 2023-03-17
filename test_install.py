@@ -17,7 +17,7 @@ Restart=always
 WantedBy=multi-user.target 
 """.replace('\\', '/')
 
-service_file = f"/etc/systemd/systme/{name0}.service"
+service_file = f"/etc/systemd/system/{name0}.service"
 with open(service_file, "w") as f:
     f.write(service_config)
 
