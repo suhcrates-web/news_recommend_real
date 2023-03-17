@@ -42,3 +42,4 @@ if sure == 'y':
         os.system("sudo systemctl daemon-reload")
         os.system(f"sudo systemctl start {name0}.service")
         os.system(f"sudo systemctl enable {name0}.service")
+        #####
