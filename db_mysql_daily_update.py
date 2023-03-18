@@ -52,9 +52,14 @@ def mysql_updater():
 
     cursor.execute(
         f"""
-        delete from news_recommend.news_ago where createtime < "{del_time}"
+        delete from news_recommend.news_ago where createtime < "{date.today()- timedelta(days=30)}" and (source !='동아일보' or length < 1000)
     
         """)
+    cursor.execute(
+        f"""
+           delete from news_recommend.news_ago where where createtime < "{date.today()- timedelta(days=60)}" and length >= 1000 and source ='동아일보'
+
+           """)
     db.commit()
 
     cursor.execute("""
