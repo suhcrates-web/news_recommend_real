@@ -22,7 +22,7 @@ def mysql_updater():
 
             """)
     for gid0 in cursor.fetchall():
-        gid_del.append(gid0)
+        gid_del.append(gid0[0])
     # 동아일보
     cursor.execute(
         f"""
@@ -30,7 +30,7 @@ def mysql_updater():
     
         """)
     for gid0 in cursor.fetchall():
-        gid_del.append(gid0)
+        gid_del.append(gid0[0])
 
 
     pool = ConnectionPool(host='localhost', port=6379, db=0)
