@@ -7,7 +7,7 @@ import binascii
 import re
 
 today0 = date.today()
-for i in range(29):
+for i in range(50):
     db = mysql.connector.connect(**config)
     cursor = db.cursor()
     print(f"날짜:{i}")
