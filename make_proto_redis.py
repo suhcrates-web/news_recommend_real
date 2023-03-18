@@ -27,7 +27,7 @@ cursor.execute(
 ar_dic = {k:v for k,v in cursor.fetchall()}
 
 for gid, content in ar_dic.items():
-    konlpy0 = okt.pos(content, norm=True, join=True)
+    konlpy0 = okt.pos(codecs.decode(content, 'utf-8'), norm=True, join=True)
     vector0 = model.infer_vector(konlpy0)
     vector0 = np.array(np.array(vector0))
     r.set(gid, vector0.tobytes())  # tobytes() 기반.
