@@ -25,7 +25,11 @@ cursor.execute(
 results = cursor.fetchall()
 temp =[codecs.decode(i[0], 'utf-8') for i in results]
 print("형태소 변환 중. 10분 소요")
-all_sample =[okt.pos(sample_list, norm=True, join=True) for sample_list in temp]
+all_sample = []
+
+for i, sample_list in enumerate(temp):
+    all_sample.append(okt.pos(sample_list, norm=True, join=True))
+    print(i)
 
 
 def tagged_document(list_of_list_of_words):  # 리스트 형태로 넣어야함
