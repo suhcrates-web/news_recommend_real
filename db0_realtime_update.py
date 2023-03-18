@@ -41,6 +41,7 @@ def updater(clean0):
         temp = requests.get(url)
         temp = json.loads(temp.content)
         if 'data' not in [*temp]:
+            # 그냥 가끔 data 없이 올 떄가 있음. 그리고 새벽에 첫 기사 나오기 전까지는 'data'가 없음.
             print('### NoDataException ###')
             raise NoDataException()
         articles += temp['data']
@@ -182,11 +183,12 @@ if __name__ == '__main__':
                 # print(f"\r마지막 수신 : {now0}",end='')
                 print(f"마지막 수신 : {now0}",end='||')
 
-            time.sleep(120)
         except NoDataException:
-            time.sleep(5)
+            pass
         except ZeroDataException:
-            time.sleep(5)
+            pass
+        time.sleep(120)
+
         sys.stdout.flush()
         gc.collect()
 
