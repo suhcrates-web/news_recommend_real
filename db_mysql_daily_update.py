@@ -26,7 +26,7 @@ def mysql_updater():
     # 동아일보
     cursor.execute(
         f"""
-        select gid from news_recommend.news_ago where createtime < "{date.today()- timedelta(days=60)}" and length >= 1000 and source ='동아일보"
+        select gid from news_recommend.news_ago where createtime < "{date.today()- timedelta(days=60)}" and length >= 1000 and source ='동아일보'
     
         """)
     for gid0 in cursor.fetchall():
