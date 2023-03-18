@@ -7,7 +7,7 @@ import mysql.connector
 from database import config
 import time
 import sys
-
+from datetime import datetime
 
 pool = ConnectionPool(host='localhost', port=6379, db=0)
 pool2 = ConnectionPool(host='localhost', port=6379, db=2)
@@ -18,27 +18,42 @@ def db2_updater():
     db = mysql.connector.connect(**config)
     cursor = db.cursor()
 
-    num_gisa = 2000
-    cursor.execute(
-        f"""
-        select gid, title, url, thumburl from news_recommend.news_ago where source='동아일보' order by createtime desc limit {num_gisa}
-        """
-    )
-    mat = np.zeros((num_gisa,50))
+    vectors = []
     gid_list = []
     title_list = []
     url_list = []
     thumburl_list = []
-    for i, (gid, title, url, thumburl) in enumerate(cursor.fetchall()):
-        mat[i:] =np.frombuffer(r.get(gid), dtype='float32')
-        gid_list.append(gid)
+    ## 동아
+    cursor.execute(
+        f"""
+        select gid, title, url, thumburl from news_recommend.news_ago where source='동아일보' order by createtime desc limit 1300;
+        """
+    )
 
+    for i, (gid, title, url, thumburl) in enumerate(cursor.fetchall()):
+        vectors.append(np.frombuffer(r.get(gid), dtype='float32'))
+        gid_list.append(gid)
         title_list.append(title)
         url_list.append(url)
         thumburl_list.append(thumburl)
-    mat_b = mat.tobytes()
+
+    ## 다른 언론사
+    cursor.execute(
+        f"""
+        select gid, title, url, thumburl from news_recommend.news_ago where source!='동아일보' order by createtime desc limit 700;
+        """
+    )
+
+    for i, (gid, title, url, thumburl) in enumerate(cursor.fetchall()):
+        vectors.append(np.frombuffer(r.get(gid), dtype='float32'))
+        gid_list.append(gid)
+        title_list.append(title)
+        url_list.append(url)
+        thumburl_list.append(thumburl)
+
+    mat_b = np.array(vectors)
     r2.flushdb()
-    r2.set('mat', mat_b)
+    r2.set('mat', mat_b.tobytes())
     r2.set('gid2', json.dumps(gid_list))
     r2.set('title', json.dumps(title_list))
     r2.set('url', json.dumps(url_list))
@@ -46,11 +61,10 @@ def db2_updater():
     r2.set('temp', np.random.rand(50).astype('float32').tobytes()) # ***** 수정해야함
 
 if __name__ == '__main__':
-    n=1
+    time.sleep(60)
     while True:
+        now0 = datetime.now()
         db2_updater()
-        print(f"{n} 사이클 완료")
-        n += 1
-        print("==============")
+        print(f"업데이트 : {now0}")
         sys.stdout.flush()
-        time.sleep(120)
+        time.sleep(60*4)

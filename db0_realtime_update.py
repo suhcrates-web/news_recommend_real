@@ -71,7 +71,7 @@ def updater(clean0):
         if len(content) > 400:
             gid = ar['gid']
             if gid not in keys:  ## api에서 받은 게 redis 에 없다면
-                write_ars.append(ar)
+                write_ars.append(ar)  # 작성대상 리스트에 쌓음.
 
     if len(write_ars) > 0:
         model = Doc2Vec.load('donga2000.model')  # doc2vec 모델 로드.
@@ -100,7 +100,7 @@ def updater(clean0):
                         cursor.execute(
                             f"""
                             insert ignore into news_recommend.news_ago values(
-                            "{ar['gid']}", "{ar['createtime']}", "{title}", b'{bin(int(binascii.hexlify(content.encode("utf-8")), 16))[2:]}', "{ar['url']}", "{ar['thumburl']}", "{ar['source']}", b'{bin(int(binascii.hexlify(str(list(vector0)).encode("utf-8")), 16))[2:]}', b'{bin(int(binascii.hexlify(str( json.dumps(konlpy0) ).encode("utf-8")), 16))[2:]}'  )
+                            "{ar['gid']}", "{ar['createtime']}", "{title}", b'{bin(int(binascii.hexlify(content.encode("utf-8")), 16))[2:]}', "{ar['url']}", "{ar['thumburl']}", "{ar['source']}",{len(content)}, b'{bin(int(binascii.hexlify(str(list(vector0)).encode("utf-8")), 16))[2:]}', b'{bin(int(binascii.hexlify(str( json.dumps(konlpy0)).encode("utf-8")), 16))[2:]}'  )
                             """
                         )
                           # 벡터를 mysql에도 저장. 인출떄는  np.array(json.loads(cursor.fetchall()[0][0]))

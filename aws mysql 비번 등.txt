@@ -1,0 +1,8 @@
+import mysql.connector
+
+config = {
+'user' : 'root',
+'password': 'dlftks44#',
+'host' : 'dongailboars-rds.cluster-cr2zqjzbyiqo.ap-northeast-2.rds.amazonaws.com',
+'port' : '3306'
+}

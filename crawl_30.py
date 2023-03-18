@@ -38,7 +38,7 @@ for i in range(29):
             cursor.execute(
                 f"""
                 insert into news_recommend.news_ago values(
-                "{ar['gid']}", "{ar['createtime']}", "{title}", b'{bin(int(binascii.hexlify(content.encode("utf-8")), 16))[2:]}', "{ar['url']}", "{ar['thumburl']}","{ar['source']}",NULL,NULL)
+                "{ar['gid']}", "{ar['createtime']}", "{title}", b'{bin(int(binascii.hexlify(content.encode("utf-8")), 16))[2:]}', "{ar['url']}", "{ar['thumburl']}","{ar['source']}",{len(content)}, NULL,NULL)
                 """
             )
             # print("=================================")

@@ -22,8 +22,6 @@ def find_10_alt(tot_mat, user_vector):
 
 app = FastAPI()
 
-
-
 pool = ConnectionPool(host='localhost', port=6379, db=0)
 pool1 = ConnectionPool(host='localhost', port=6379, db=1)
 pool2 = ConnectionPool(host='localhost', port=6379, db=2)
@@ -44,7 +42,7 @@ async def hello(ga:str, gid:str=None):
     #######
     dics1= {}
     for _ in range(3):
-        try:  # 그냥 아무이유없이 redis에서 None 이 나오는 경우가 매우 드물게 있어서
+        try:  # redis에서 이유 없이 None 이 나오는 경우가 매우 드물게 있어서 3번 시도.
             if gid is None:  # 사용자에게서 gid 가 안옴
                 u_vec = r1.get(ga)
                 if u_vec == None:  # 사용자 ga에 해당하는 벡터가 없음

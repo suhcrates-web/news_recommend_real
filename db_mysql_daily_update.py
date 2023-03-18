@@ -13,14 +13,25 @@ def mysql_updater():
 
 
     del_time = date.today()- timedelta(days=30)
+    gid_del = []
 
+    # 일반 언론사
     cursor.execute(
         f"""
-        select gid, createtime from news_recommend.news_ago where createtime < "{del_time}"
+            select gid from news_recommend.news_ago where createtime < "{date.today()- timedelta(days=30)}" and (source !='동아일보 or length < 1000)"
+
+            """)
+    for gid0 in cursor.fetchall():
+        gid_del.append(gid0)
+    # 동아일보
+    cursor.execute(
+        f"""
+        select gid from news_recommend.news_ago where createtime < "{date.today()- timedelta(days=60)}" and length >= 1000 and source ='동아일보"
     
         """)
+    for gid0 in cursor.fetchall():
+        gid_del.append(gid0)
 
-    gid_del = [x[0] for x in cursor.fetchall()]  # 30일 전의 gid
 
     pool = ConnectionPool(host='localhost', port=6379, db=0)
     r = redis.Redis(connection_pool=pool)
