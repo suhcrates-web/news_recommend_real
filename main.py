@@ -59,7 +59,7 @@ async def hello(ga:str, gid:str=None):
             r1.set(ga, u_vec.tobytes())
             r1.expire(ga, 2592000)#60*60*24*30 : 30일 뒤
             mat = r2.get('mat')
-            mat = np.frombuffer(mat).reshape(-1, 50)
+            mat = np.frombuffer(mat, dtype='float32').reshape(-1, 50)
             top10 = list(find_10_alt(mat, u_vec))
             a = r2.get('title')
             title_list = json.loads(a)
