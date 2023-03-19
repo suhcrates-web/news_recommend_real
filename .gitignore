@@ -8,4 +8,5 @@ test*.py
 *.model
 exp*.py
 *.txt
+!ReadMe.txt
 *.log
