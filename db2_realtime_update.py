@@ -29,7 +29,7 @@ def db2_updater():
     ## 동아
     cursor.execute(
         f"""
-        select gid, title, url, thumburl from news_recommend.news_ago where source='동아일보' order by createtime desc limit 1300;
+        select gid, title, url, thumburl from news_recommend.news_ago where source='동아일보' order by createtime desc limit 100;
         """
     )
 
@@ -43,7 +43,7 @@ def db2_updater():
     ## 다른 언론사
     cursor.execute(
         f"""
-        select gid, title, url, thumburl from news_recommend.news_ago where source!='동아일보' order by createtime desc limit 700;
+        select gid, title, url, thumburl from news_recommend.news_ago where source!='동아일보' order by createtime desc limit 500;
         """
     )
 

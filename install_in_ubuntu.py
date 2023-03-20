@@ -68,7 +68,7 @@ Description= {name0}
 User=donga
 WorkingDirectory={working_dir}
 Environment="PATH={sys.prefix}/bin"
-ExectStart={sys.executable} {working_dir}/{name0}.py
+ExecStart={sys.executable} {working_dir}/{name0}.py
 Restart=always
 
 [Install] 
