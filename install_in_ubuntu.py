@@ -7,13 +7,18 @@
 sure = input("###  news_recommend를 설치하시겠습니까? (y/n) :")
 if sure == 'n':
     exit()
-sure = input("###  sudo apt install openjdk-8-jdk 를 통해 JAVA를 설치 후 JAVA_HOME을 설정하셨습니까? (y/n) :")
-if sure == 'n':
-    exit()
 sure = input("git cone, venv 설치, pip install 완료 후 venv activate 했습니까? (y/n) :")
 if sure == 'y':
     import os
     import sys
+    import subprocess
+
+    ### 자바 설치
+    
+    os.system("pip3.11 install requests numpy fastapi uvicorn gensim konlpy redis mysql-connector-python")
+    os.system("sudo apt install openjdk-8-jdk")
+    output = subprocess.run(['which','java'], stdout=subprocess.PIPE).stdout.decode().strip()
+    os.system(f"export JAVA_HOME={output}")
 
     ### database.py 작성
     working_dir = os.getcwd()
@@ -27,6 +32,7 @@ config = {
 'port' : '3306'
 }
     """
+    sure = input(f"{text0} \n=========\n이 내용이 맞습니까? 아니라면 인스톨 파일을 수정하세요. (y/n)")
     with open(working_dir + '/database.py', "w") as f:
         f.write(text0)
     print('database.py 생성 완료')
