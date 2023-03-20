@@ -18,7 +18,7 @@ okt = Okt()
 
 cursor.execute(
     """
-    select content from news_recommend.news_ago where source="동아일보" and "length" > 1000 order by createtime desc limit 2000
+    select content from news_recommend.news_ago where source="동아일보" and length > 1000 order by createtime desc limit 2000
     """
 )
 

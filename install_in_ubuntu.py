@@ -1,5 +1,6 @@
 # git clone
 # venv 설치.
+# database.py 만들기
 # pip install requests numpy fastapi uvicorn gensim konlpy redis mysql-connector-python
 # venv activate 후 install_in_ubuntu.py 실행
 
