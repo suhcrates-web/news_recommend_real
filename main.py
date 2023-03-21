@@ -68,8 +68,10 @@ async def hello(ga:str, gid:str=None):
             thumburl_list = json.loads(r2.get('thumburl'))
             gid_list = json.loads(r2.get('gid2'))
             dics1 = {}
+            n=0
             for i, x in enumerate(top10):
-                if gid != gid_list[x]:
+                if gid != gid_list[x] and n<=12:
+                    n += 1
                     dics1[i] = {'title': title_list[x], 'url': url_list[x], 'thumburl': thumburl_list[x]}
             break
         except Exception as e:
