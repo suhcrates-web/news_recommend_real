@@ -27,7 +27,7 @@ r3 = redis.Redis(connection_pool=pool3)
 async def hello(ga:str, gid:str=None):
     gid = None if gid=='_' else gid
     r3.rpush(datetime.now().strftime('%Y%m%d%H:%M')[:-1],f'["{ga}","{gid}"]')
-    p = 0.3
+    p = 0.2
     dics1= {}
     for _ in range(3):
         try:  # # redis에서 이유 없이 None 이 나오는 경우가 매우 드물게 있어서 3번 시도.
@@ -68,10 +68,8 @@ async def hello(ga:str, gid:str=None):
             thumburl_list = json.loads(r2.get('thumburl'))
             gid_list = json.loads(r2.get('gid2'))
             dics1 = {}
-            n=0
             for i, x in enumerate(top10):
-                if gid != gid_list[x] and n<=12:
-                    n += 1
+                if gid != gid_list[x]:
                     dics1[i] = {'title': title_list[x], 'url': url_list[x], 'thumburl': thumburl_list[x]}
             break
         except Exception as e:
