@@ -76,7 +76,7 @@ async def hello(ga:str, gid:str=None):
             break
         except Exception as e:
             print(e)
-    return dics1[:12]
+    return dics1
 
 # if __name__ == '__main__':
 #     uvicorn.run(app, port=8001, host='0.0.0.0')
