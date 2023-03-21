@@ -8,7 +8,8 @@ from datetime import datetime
 
 def find_10_alt(tot_mat, user_vector):
     points = np.matmul(tot_mat, user_vector)
-    top10 = np.argsort(points)[::-1][:10]
+    points += np.random.randint(70, size=len(points))
+    top10 = np.argsort(points)[::-1][:13]
     return top10
 
 app = FastAPI()
@@ -65,13 +66,15 @@ async def hello(ga:str, gid:str=None):
             title_list = json.loads(a)
             url_list = json.loads(r2.get('url'))
             thumburl_list = json.loads(r2.get('thumburl'))
+            gid_list = json.loads(r2.get('gid2'))
             dics1 = {}
             for i, x in enumerate(top10):
-                dics1[i] = {'title': title_list[x], 'url': url_list[x], 'thumburl': thumburl_list[x]}
+                if gid != gid_list[x]:
+                    dics1[i] = {'title': title_list[x], 'url': url_list[x], 'thumburl': thumburl_list[x]}
             break
         except Exception as e:
             print(e)
-    return dics1
+    return dics1[:12]
 
 # if __name__ == '__main__':
 #     uvicorn.run(app, port=8001, host='0.0.0.0')
