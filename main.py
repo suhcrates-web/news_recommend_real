@@ -10,8 +10,8 @@ def find_10_alt(tot_mat, user_vector):
     points = np.matmul(tot_mat, user_vector)
     sorted0 = np.argsort(points)[::-1]
     zero = np.array(sorted0[:3])
-    first = np.random.choice(sorted0[3:30], 7, replace=False)
-    second = np.random.choice(sorted0[30:120], 4, replace=False)
+    first = np.random.choice(sorted0[3:24], 7, replace=False)
+    second = np.random.choice(sorted0[24:120], 4, replace=False)
     top10 = np.concatenate((zero, first, second))
     return top10
 
