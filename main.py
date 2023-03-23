@@ -12,7 +12,7 @@ def find_10_alt(tot_mat, user_vector, gisa_vector):
     sorted_g = np.argsort(np.matmul(tot_mat, gisa_vector))[::-1][:14]
     sorted_u_origin = np.argsort(np.matmul(tot_mat, user_vector))[::-1]
     sorted_u = sorted_u_origin[:37][~np.isin(sorted_u_origin[:37], sorted_g)]
-    indices = np.random.choice(14, size=5, replace=False)
+    indices = np.random.choice(10, size=5, replace=False)
     indices.sort()
     zero = sorted_g[indices]
     first = sorted_u[indices]
