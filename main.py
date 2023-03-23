@@ -35,7 +35,7 @@ r3 = redis.Redis(connection_pool=pool3)
 async def hello(ga:str, gid:str=None):
     gid = None if gid=='_' else gid
     r3.rpush(datetime.now().strftime('%Y%m%d%H:%M')[:-1],f'["{ga}","{gid}"]')
-    p = 0.35
+    p = 0.3
     dics1= {}
     for _ in range(3):
         try:  # # redis에서 이유 없이 None 이 나오는 경우가 매우 드물게 있어서 3번 시도.
@@ -64,7 +64,6 @@ async def hello(ga:str, gid:str=None):
                         g_vec = u_vec
             u_vec = np.frombuffer(u_vec, dtype='float32')
             g_vec = np.frombuffer(g_vec, dtype='float32')
-
             mat = r2.get('mat')
             mat = np.frombuffer(mat, dtype='float32').reshape(-1, 50)
             top10 = list(find_10_alt(mat, u_vec, g_vec))
