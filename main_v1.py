@@ -1,4 +1,3 @@
-# main_v2
 from fastapi import FastAPI
 import numpy as np
 import json
@@ -6,17 +5,13 @@ import redis
 from redis import ConnectionPool
 import uvicorn
 from datetime import datetime
-import traceback
 
-def find_10_alt(tot_mat, user_vector, gisa_vector):
-    sorted_g = np.argsort(np.matmul(tot_mat, gisa_vector))[::-1][:14]
-    sorted_u_origin = np.argsort(np.matmul(tot_mat, user_vector))[::-1]
-    sorted_u = sorted_u_origin[:37][~np.isin(sorted_u_origin[:37], sorted_g)]
-    indices = np.random.choice(14, size=5, replace=False)
-    indices.sort()
-    zero = sorted_g[indices]
-    first = sorted_u[indices]
-    second = sorted_u_origin[-3:]
+def find_10_alt(tot_mat, user_vector):
+    points = np.matmul(tot_mat, user_vector)
+    sorted0 = np.argsort(points)[::-1]
+    zero = np.array(sorted0[:3])
+    first = np.random.choice(sorted0[3:24], 7, replace=False)
+    second = np.random.choice(sorted0[24:120], 4, replace=False)
     top10 = np.concatenate((zero, first, second))
     return top10
 
@@ -35,7 +30,7 @@ r3 = redis.Redis(connection_pool=pool3)
 async def hello(ga:str, gid:str=None):
     gid = None if gid=='_' else gid
     r3.rpush(datetime.now().strftime('%Y%m%d%H:%M')[:-1],f'["{ga}","{gid}"]')
-    p = 0.35
+    p = 0.2
     dics1= {}
     for _ in range(3):
         try:  # # redis에서 이유 없이 None 이 나오는 경우가 매우 드물게 있어서 3번 시도.
@@ -64,13 +59,12 @@ async def hello(ga:str, gid:str=None):
                         g_vec = u_vec
             u_vec = np.frombuffer(u_vec, dtype='float32')
             g_vec = np.frombuffer(g_vec, dtype='float32')
-
-            mat = r2.get('mat')
-            mat = np.frombuffer(mat, dtype='float32').reshape(-1, 50)
-            top10 = list(find_10_alt(mat, u_vec, g_vec))
             u_vec = (1 - p) * g_vec + p * u_vec
             r1.set(ga, u_vec.tobytes())
-            r1.expire(ga, 2592000)  # 60*60*24*30 : 30일 뒤
+            r1.expire(ga, 2592000)#60*60*24*30 : 30일 뒤
+            mat = r2.get('mat')
+            mat = np.frombuffer(mat, dtype='float32').reshape(-1, 50)
+            top10 = list(find_10_alt(mat, u_vec))
             a = r2.get('title')
             title_list = json.loads(a)
             url_list = json.loads(r2.get('url'))
@@ -82,9 +76,8 @@ async def hello(ga:str, gid:str=None):
                     dics1[i] = {'title': title_list[x], 'url': url_list[x], 'thumburl': thumburl_list[x]}
             break
         except Exception as e:
-            traceback.print_exc()
             print(e)
     return dics1
 
-if __name__ == '__main__':
-    uvicorn.run(app, port=8001, host='localhost')
+# if __name__ == '__main__':
+#     uvicorn.run(app, port=8001, host='0.0.0.0')
